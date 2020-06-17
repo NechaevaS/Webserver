@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+#  http://localhost:8080/directory/youpi.bla
+#  http://localhost:8080/data/en/YoupiBanane/youpi.bla/data/en/ubuntu_cgi_tester
+ROOT=/home/sveta/work/Webserv/data/en
+#wget --method=POST --debug http://localhost:8080/directory/youpi.bla --body-file=testFile
+
+echo
+BODY="ooo"
+RES=$(wget --method=POST -O - http://localhost:8080/directory/youpi.bla --body-data="${BODY}")
+echo $RES
+if [ "$RES" = "OOO" ]
+then 
+    echo "POST test ok:)"
+else
+    echo "POST test fail:("
+fi
+
+wget --method=PUT http://localhost:8080/put_test/newfile.txt --body-data="oooaaaooo"
+if [ -f "${ROOT}/puted/newfile.txt" ];
+then 
+    echo "PUT test ok:)"
+else
+    echo "PUT test fail:("
+fi
+
+wget --method=DELETE http://localhost:8080/put_test/newfile.txt
+if [ ! -e "${ROOT}/puted/newfile.txt" ];
+then 
+    echo "DELETE test ok:)"
+else
+    echo "DELETE test fail:("
+fi
